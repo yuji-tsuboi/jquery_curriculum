@@ -54,7 +54,7 @@
       //
       //
       // $.ajaxによってデータが取得できたら、必要なデータ(作品名とか作者名とか)を取得します。
-      // 取得できたらHTMLに<ul class='lists'></ul>を用意しているので、その中に下のテンプレに沿ってデータを入れ込みましょう。
+      // 取得できたらHTMLに<ul class='lists'></ul>を用意しているので、下のテンプレに沿ってデータを入れ込みましょう。
       // <li class='lists__item'>
       //  <div class='lists__item__inner'>
       //    <a href='' class='lists__item__link' target='_blank'>
@@ -66,8 +66,24 @@
       //  </div>
       // </li>
       //
+      // 取得できた書籍の件数をもとに、ページャを作成しましょう
+      // ページャの条件
+      // ├ 「前へ」と「次へ」のボタンがある
+      // ├ 1ページ目では「前へ」に、最後のページでは「次へ」にdisabledクラスをつけて非活性（使用不能）にする
+      // └ 1ページしかない場合はどちらもdisabledクラスをつけて非活性にする
+      // 
+      // ページャのテンプレート
+      // <div class="js-pager">
+      //   <ul class="btn-wrapper">
+      //     <li class="prev btn-item"><a class="btn-anchor" href="">前へ</a></li>
+      //     <li class="next btn-item"><a class="btn-anchor" href="">次へ</a></li>
+      //   </ul>
+      // </div>
       //
       //
+
+
+
     </script>
   </body>
 </html>

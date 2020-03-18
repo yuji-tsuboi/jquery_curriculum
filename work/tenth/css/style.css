@@ -1,12 +1,10 @@
-.clearfix:after {
+.clearfix::after {
   display: block;
   clear: both;
   content: '';
 }
-.wrapper {
-  padding: 20px;
-}
-.container {
+.wrap {
+  padding-bottom: 40px;
 }
 .header {
   width: 100%;
@@ -94,6 +92,41 @@
 .message {
   margin-bottom: 50px;
   text-align: center;
+}
+.js-pager {
+  border-top: 1px solid #ccc;
+  padding-top: 35px;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.btn-item {
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
+  background-color: #43cee0;
+  color: #fff;
+  margin-left: 10px;
+}
+.btn-item:hover:not(.disabled) {
+  background-color: #1eabbd;
+}
+.btn-item:first-child {
+  margin-left: 0;
+}
+.btn-anchor {
+  text-align: center;
+  display: block;
+  height: 100%;
+  font-size: 16px;
+}
+.disabled {
+  background-color: #888;
+}
+.disabled .btn-anchor {
+  cursor: default;
 }
 
 @media screen and (max-width: 767px) {
