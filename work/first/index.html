@@ -69,6 +69,59 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
+  $(function() {
+    // 第1門
+    $('#q1').css('color', 'red');
+    // 第2門
+    $('#q2').click(function() {
+      $(this).css('background-color', 'pink');
+    });
+    //第3問
+    $('#q3').click(fadeOut);
+    function fadeOut() {
+      $(this).fadeOut(2000);
+    }
+    //第4問
+    $('#q4').click(function() {
+      $(this).prepend('DOMの中の前')
+             .append('DOMの中の後')
+             .before('DOMの前')
+             .after('DOMの後')
+    });
+    //第5問
+    $('#q5').click(function() {
+      $(this).addClass('large');
+    });
+    //第6問
+    $('#q6').click(function() {
+      $(this).animate({
+        'marginLeft': 100,
+        'marginTop': 100
+      },2000);
+    });
+    //第7問
+    $('#q7').find('li').click(function() {
+      var targetNum = $(this).index();
+      console.log(targetNum);
+      alert(targetNum);
+    });
+    //第8問
+    $('#q8').hover(function() {
+      $(this).addClass('large');
+    }, function() {
+      $(this).removeClass('large');
+    });
+    //第9問
+    $('#q9').click(function() {
+      var text = $(this).data('text');
+      console.log(text);
+    });
+    //第10問
+    $('#q10').find('li').click(function() {
+      var num = $(this).index();
+      $('#q11').find('li').eq(num).addClass('large');
+    });
+  });
 // 第1問  id='q1'の要素の文字色を赤色にせよ。
 // 第2問  id='q2'の要素をクリックしたら背景色をピンクにせよ。
 // 第3問  id='q3'の要素をクリックしたら2秒かけてフェードアウトさせよ。
