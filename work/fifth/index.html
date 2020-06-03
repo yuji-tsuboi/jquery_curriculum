@@ -100,6 +100,7 @@
       $(function() {
         $('.select').change(function() {
           var value = $(this).val();
+          // ----
           $('ul.list li').each(function(index, list) {
             if( value == $(list).data('category-type')) {
               $(list).show();
@@ -107,11 +108,12 @@
               $(list).hide();
             }
           });
+          // ----
           if (value == "all") {
             $('ul.list li').show();
           }
-        })
-      })
+        });
+      });
     </script>
   </body>
 </html>
