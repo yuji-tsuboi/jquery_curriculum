@@ -34,6 +34,44 @@
       // .data() 要素のdata属性を取得します。
       // .width() 要素の幅を取得します。
       // .length 要素の個数を取得します。
+
+      var pages = [];
+      var numCount = $('.slider-list li').length;
+      var num = 0;
+
+      for(var i = 0; i < numCount; i++) {
+      if (i == 0) {
+        pages.push(0);
+      } else {
+        num += - $('.slider-list li').eq(i).width();
+        pages.push(num);
+      }
+      }
+
+      var pagesNum = 0;
+
+      $(".slider-ctrl-btn").click(function () {
+        if ($(this).data('ctrl') === 'next') {
+          var step = 1;
+          pagesNum = pagesNum + step;
+          if (pagesNum === pages.length) {
+            pagesNum = 0;
+          }
+          $(".slider-list").animate({
+            left: pages[pagesNum]
+          })
+        } else if ($(this).data('ctrl') === 'prev') {
+          var back = -1;
+          pagesNum = pagesNum + back;
+          if (pagesNum === -1) {
+            pagesNum = pages.length - 1;
+          }
+          $(".slider-list").animate({
+            left: pages[pagesNum]
+          })
+        }
+      });
+
     </script>
   </body>
 </html>

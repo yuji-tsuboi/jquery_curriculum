@@ -86,7 +86,7 @@
       $(this).prepend('DOMの中の前')
              .append('DOMの中の後')
              .before('DOMの前')
-             .after('DOMの後')
+             .after('DOMの後');
     });
     //第5問
     $('#q5').click(function() {
@@ -106,11 +106,13 @@
       alert(targetNum);
     });
     //第8問
-    $('#q8').hover(function() {
-      $(this).addClass('large');
-    }, function() {
-      $(this).removeClass('large');
-    });
+    $('#q8').hover(
+      function() {
+        $(this).addClass('large');
+      }, 
+      function() {
+        $(this).removeClass('large');
+      });
     //第9問
     $('#q9').click(function() {
       var text = $(this).data('text');

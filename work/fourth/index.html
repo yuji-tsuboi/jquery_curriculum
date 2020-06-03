@@ -49,6 +49,11 @@
     <script>
       // 今回やるのはドロップメニューです。
       // メニューをhoverすると隠れている中のメニューが表示され、メニューから離れると中のメニューが非表示されるプログラムです。
+      $('.menu__list li').hover(function() {
+        $(this).children('ul').stop().slideDown();
+      }, function() {
+        $(this).children('ul').stop().slideUp();
+      });
       // [使用するメソッド]
       // .hover(関数, 関数) 要素の上にマウスカーソルが乗ると第1引数の関数を実行し、マウスカーソルから離れると第2引数の関数を実行します。
       // .slideDown() 要素がスライドしながら表示されます。
