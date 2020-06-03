@@ -79,11 +79,60 @@
       //     <li class="next btn-item"><a class="btn-anchor" href="">次へ</a></li>
       //   </ul>
       // </div>
-      //
-      //
-
-
-
+      $(function () {
+          var pageNum = 0;
+          $('.search__btn').on('click', function () {
+            pageNum = pageNum + 1;
+            var searchword = $('.search__text__input').val();
+            console.log(searchword);
+            // console.log(searchword);
+            $.ajax({
+              url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+              type: 'GET',
+              datatype: 'json',
+              data: {
+                keyword: searchword,
+                applicationId: '1019399324990976605',
+                booksGenreId: '001',
+                hits: 20,
+                page: pageNum
+              },
+            })
+            .done(function (data) {
+              console.log(data);
+              $('ul.lists').empty();
+              //検索結果が0件の場合
+              if (data.hits === 0) {
+                $('.lists').after('<div class="coment"></div>')
+                message = $('.coment');
+                message.html('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>'); //コメントの中をhtmlで書き換える
+              }
+              //通信が成功した時
+              $.each(data.Items,function(index,item){
+                console.log(item);
+                var booklist = (
+                  '<li class="lists__item">' + 
+                    '<div class="lists__item__inner">' + 
+                      '<a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' + 
+                        '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
+                        '<p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +
+                        '<p class="lists__item__detail">作者　：　' + item.Item.author + '</p>' +
+                        '<p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p>' + 
+                      '</a>' +
+                    '</div>' + 
+                  '</li>');
+                $('ul.lists').append(booklist);
+              })
+            })
+            // 通信が失敗した時
+            .fail(function () {
+              $('.lists').after('<div class="error"></div>') //errorという新たなクラスをlistsの後ろ(中)に挿入します
+              error = $('.error'); //変数にクラスを代入
+              $('.error').empty();
+              error.html('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
+            });
+          });
+        });
     </script>
   </body>
 </html>
