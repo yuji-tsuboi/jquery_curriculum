@@ -136,19 +136,6 @@
       
       $(function() {
         var pageNum = 1;
-        $('.search__btn').on('click', function() {
-          search();
-        });
-        // $('li.prev').on('click', function() {
-        //   console.log("24");
-        //   serach();
-        //   pageNum = pageNum - 1;
-        // });
-        // $('li.next').on('click', function() {
-        //   search();
-        //   pageNum = pageNum + 1;
-        // });
-
         function search() {
           $('ul.lists').empty();
           var searchword = $('.search__text__input').val();
@@ -186,13 +173,13 @@
               $('ul.lists').append(booklist);
             });
             var pager = (
-                '<div class="js-pager">' +
-                  '<ul class="btn-wrapper">' + 
-                    '<li class="prev btn-item">' + '<a class="btn-anchor" href="">' + '前へ' + '</a>' + '</li>' + 
-                    '<li class="next btn-item">' + '<a class="btn-anchor" href="">' + '次へ' + '</a>' + '</li>' + 
-                  '</ul>' + 
-                '</div>'
-              );
+              '<div class="js-pager">' +
+                '<ul class="btn-wrapper">' + 
+                  '<li class="prev btn-item">' + '<a class="btn-anchor" href="">' + '前へ' + '</a>' + '</li>' + 
+                  '<li class="next btn-item">' + '<a class="btn-anchor" href="">' + '次へ' + '</a>' + '</li>' + 
+                '</ul>' + 
+              '</div>'
+            );
             $('ul.lists').after(pager);
             $('li.prev').on('click', function() {
               serach();
@@ -204,7 +191,7 @@
               search();
             });
             if (data.hits === 0) {
-                $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
             }
           })
           .fail(function() {
@@ -216,7 +203,19 @@
             }
           });
         }
-      })
+        $('.search__btn').on('click', function() {
+          search();
+        });
+        $('li.prev').on('click', function() {
+          console.log("24");
+          serach();
+          pageNum = pageNum - 1;
+        });
+        $('li.next').on('click', function() {
+          search();
+          pageNum = pageNum + 1;
+        });
+      });
     </script>
   </body>
 </html>
