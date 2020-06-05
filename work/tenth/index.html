@@ -172,6 +172,7 @@
               );
               $('ul.lists').append(booklist);
             });
+            $('.js-pager').empty();
             var pager = (
               '<div class="js-pager">' +
                 '<ul class="btn-wrapper">' + 
@@ -180,7 +181,7 @@
                 '</ul>' + 
               '</div>'
             );
-            $('ul.lists').after(pager);
+            $('ul.lists').append(pager);
             $('li.prev').on('click', function() {
               serach();
               pageNum = pageNum - 1;
@@ -206,15 +207,13 @@
         $('.search__btn').on('click', function() {
           search();
         });
-        $('li.prev').on('click', function() {
-          console.log("24");
-          serach();
-          pageNum = pageNum - 1;
-        });
-        $('li.next').on('click', function() {
-          search();
-          pageNum = pageNum + 1;
-        });
+        // $('li.prev').on('click', function() {
+        //   console.log("24");
+        //   serach(pageNum = pageNum - 1);
+        // });
+        // $('li.next').on('click', function() {
+        //   search(pageNum = pageNum + 1);
+        // });
       });
     </script>
   </body>
