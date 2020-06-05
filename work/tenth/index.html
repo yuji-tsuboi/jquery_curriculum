@@ -80,60 +80,6 @@
       //   </ul>
       // </div>
 
-      // $(function() {
-      //   pageNum = 0;
-      //   $('.search__btn').on('click', function() {
-      //     $('ul.lists').empty();
-      //     pageNum = pageNum + 1;
-      //     var searchword = $('.search__text__input').val();
-      //     console.log(searchword);
-      //     $.ajax({
-      //       url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-      //       type: 'GET',
-      //       datatype: 'json',
-      //       data: {
-      //         // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
-      //         applicationId: '1019399324990976605', // (今回はこのIDを使用してください) ※IDは他サイト等には絶対に転載しないでください
-      //         booksGenreId: '001',
-      //         keyword: searchword,
-      //         hits: 20,
-      //         page: pageNum
-      //       }
-      //     })
-      //     .done(function(data) {
-      //       $('ul.lists').empty();
-      //       console.log(data);
-      //       $(data.Items).each(function(index, item) {
-      //       console.log(item);
-      //       var booklist = (
-      //         '<li class="lists__item">' + 
-      //           '<div class="lists__item__inner">' + 
-      //             '<a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' + 
-      //               '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
-      //               '<p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +
-      //               '<p class="lists__item__detail">作者　：　' + item.Item.author + '</p>' +
-      //               '<p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p>' + 
-      //             '</a>' +
-      //           '</div>' + 
-      //         '</li>'
-      //       );
-      //       $('ul.lists').append(booklist);
-      //       });
-      //       if (data.hits === 0) {
-      //         $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
-      //       }
-      //     })
-      //     .fail(function() {
-      //       $('ul.lists').empty();
-      //       if (searchword == 0) {
-      //         $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
-      //       } else {
-      //         $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
-      //       }
-      //     });
-      //   });
-      // }); 
-      
       $(function() {
         var pageNum = 1;
         function search() {
@@ -182,15 +128,11 @@
               '</div>'
             );
             $('ul.lists').append(pager);
-            $('li.prev').on('click', function() {
-              serach();
-              pageNum = pageNum - 1;
-            });
-            $('li.next').on('click', function() {
-              console.log("24");
-              pageNum = pageNum + 1;
-              search();
-            });
+            if (data.page == 1) {
+              $('.prev').addClass("disabled");
+            } else if (data.page == data.pageCount) {
+              $('.next').addClass("disabled");
+            }
             if (data.hits === 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
             }
@@ -207,13 +149,15 @@
         $('.search__btn').on('click', function() {
           search();
         });
-        // $('li.prev').on('click', function() {
-        //   console.log("24");
-        //   serach(pageNum = pageNum - 1);
-        // });
-        // $('li.next').on('click', function() {
-        //   search(pageNum = pageNum + 1);
-        // });
+        $(document).on("click", "li.prev", function() {
+          event.preventDefault();
+          search(pageNum = pageNum - 1);
+          $('.prev').prop('disabled', false);
+        });
+        $(document).on("click", "li.next", function() {
+          event.preventDefault();
+          search(pageNum = pageNum + 1);
+        });
       });
     </script>
   </body>
