@@ -129,9 +129,9 @@
             );
             $('ul.lists').append(pager);
             if (data.page == 1) {
-              $('.prev').addClass("disabled");
+              $('.prev').addClass("disabled").prop("disabled", true);
             } else if (data.page == data.pageCount) {
-              $('.next').addClass("disabled");
+              $('.next').addClass("disabled").prop("disabled", true);
             }
             if (data.hits === 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
@@ -152,7 +152,6 @@
         $(document).on("click", "li.prev", function() {
           event.preventDefault();
           search(pageNum = pageNum - 1);
-          $('.prev').prop('disabled', false);
         });
         $(document).on("click", "li.next", function() {
           event.preventDefault();
