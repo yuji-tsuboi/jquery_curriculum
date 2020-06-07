@@ -130,11 +130,25 @@
             $('ul.lists').append(pager);
             if (data.page == 1) {
               $('.prev').addClass("disabled").prop("disabled", true);
+              $('.prev a').on("click", function(e) {
+                e.preventDefault();
+              });
             } else if (data.page == data.pageCount) {
               $('.next').addClass("disabled").prop("disabled", true);
+              $('.next a').on("click", function(e) {
+                e.preventDefault();
+              });
             }
             if (data.hits === 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              $('.prev').addClass("disabled").prop("disabled", true);
+              $('.prev a').on("click", function(e) {
+                e.preventDefault();
+              });
+              $('.next').addClass("disabled").prop("disabled", true);
+              $('.next a').on("click", function(e) {
+                e.preventDefault();
+              });
             }
           })
           .fail(function() {
