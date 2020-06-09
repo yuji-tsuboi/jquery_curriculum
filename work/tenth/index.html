@@ -137,9 +137,11 @@
               $('.next').addClass("disabled").prop("disabled", true);
               $('.next a').on("click", function(e) {
                 e.preventDefault();
+                $('.message').empty();
+                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
               });
             }
-            if (data.hits === 0) {
+              if (data.hits == 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
               $('.prev').addClass("disabled").prop("disabled", true);
               $('.prev a').on("click", function(e) {
@@ -161,6 +163,7 @@
           });
         }
         $('.search__btn').on('click', function() {
+          pageNum = 1;
           search();
         });
         $(document).on("click", "li.prev", function() {
