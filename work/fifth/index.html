@@ -100,11 +100,11 @@
       $(function() {
         $('.select').change(function() {
           var value = $(this).val();
-          if (value == 'all') {
-            $('ul.list li').show();
+          if (value === 'all') {
+            $('.list li').show();
           } else {
-            $('ul.list li').each(function(index, list) {
-              if (value == $(list).data("category-type")) {
+            $('.list li').each(function(index, list) {
+              if (value === $(list).data("category-type")) {
                 $(list).show();
               } else {
                 $(list).hide();
