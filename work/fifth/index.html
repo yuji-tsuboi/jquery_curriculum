@@ -104,6 +104,8 @@
             $('.list li').show();
           } else {
             $('.list li').each(function(index, list) {
+              console.log(index);
+              console.log(list);
               if (value === $(list).data("category-type")) {
                 $(list).show();
               } else {
