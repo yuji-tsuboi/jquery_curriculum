@@ -82,7 +82,7 @@
 
       $(function() {
         var pageNum = 1;
-        function search() {
+        function Search() {
           $('ul.lists').empty();
           var searchword = $('.search__text__input').val();
           console.log(searchword);
@@ -102,16 +102,16 @@
           .done(function(data) {
             $('ul.lists').empty();
             console.log(data);
-            $pager(data);
+            Pager(data);
             $('.js-pager').empty();
             $('ul.lists').append(pager);
-            $data_hits(data);
+            DataHits(data);
           })
-          .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-            $data_fail(XMLHttpRequest);
+          .fail(function(XMLHttpRequest) {
+            DataFail(XMLHttpRequest);
           });
         }
-        function $pager(data) {
+        function Pager(data) {
           $(data.Items).each(function(index, item) {
             console.log(item);
             var booklist = (
@@ -137,7 +137,7 @@
             '</ul>' + 
           '</div>'
         );
-        function $data_hits(data) {
+        function DataHits(data) {
           if (data.hits == 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
               $('.prev').addClass("disabled").prop("disabled", true);
@@ -148,23 +148,21 @@
               $('.next a').on("click", function(e) {
                 e.preventDefault();
               });
-          } 
-          else {
+          } else {
             if (data.page == 1) {
               $('.prev').addClass("disabled").prop("disabled", true);
               $('.prev a').on("click", function(e) {
                 e.preventDefault();
               });
-              if (data.pageCount == 1) {
-                $('.next').addClass("disabled").prop("disabled", true);
-                $('.next a').on("click", function(e) {
-                  e.preventDefault();
-                  $('.message').empty();
-                  $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-                });
-              }
             } 
-            else if (data.page == data.pageCount) {
+            if (data.pageCount == 1) {
+              $('.next').addClass("disabled").prop("disabled", true);
+              $('.next a').on("click", function(e) {
+                e.preventDefault();
+                $('.message').empty();
+                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+              });
+            } else if (data.page == data.pageCount) {
               $('.next').addClass("disabled").prop("disabled", true);
               $('.next a').on("click", function(e) {
                 e.preventDefault();
@@ -174,14 +172,14 @@
             }
           }
         }
-        function $data_fail(XMLHttpRequest) {
+        function DataFail(XMLHttpRequest) {
           if (navigator.onLine == false) {
             $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
-          } else {
-            $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
-          }
+          } 
           console.log(XMLHttpRequest.status);
           switch (XMLHttpRequest.status) {
+            default:
+              $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
             case 400:
               $('.message').empty();
               $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
@@ -206,15 +204,15 @@
         }
         $('.search__btn').on('click', function() {
           pageNum = 1;
-          search();
+          Search();
         });
         $(document).on("click", "li.prev", function() {
           event.preventDefault();
-          search(pageNum = pageNum - 1);
+          Search(pageNum = pageNum - 1);
         });
         $(document).on("click", "li.next", function() {
           event.preventDefault();
-          search(pageNum = pageNum + 1);
+          Search(pageNum = pageNum + 1);
         });
       });
     </script>
