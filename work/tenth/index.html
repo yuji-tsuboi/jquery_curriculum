@@ -102,64 +102,16 @@
           .done(function(data) {
             $('ul.lists').empty();
             console.log(data);
-            $pager();
+            $pager(data);
             $('.js-pager').empty();
-            var pager = (
-              '<div class="js-pager">' +
-                '<ul class="btn-wrapper">' + 
-                  '<li class="prev btn-item">' + '<a class="btn-anchor" href="">' + '前へ' + '</a>' + '</li>' + 
-                  '<li class="next btn-item">' + '<a class="btn-anchor" href="">' + '次へ' + '</a>' + '</li>' + 
-                '</ul>' + 
-              '</div>'
-            );
             $('ul.lists').append(pager);
-
-            if (data.hits == 0) {
-              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
-              $('.prev').addClass("disabled").prop("disabled", true);
-              $('.prev a').on("click", function(e) {
-                e.preventDefault();
-              });
-              $('.next').addClass("disabled").prop("disabled", true);
-              $('.next a').on("click", function(e) {
-                e.preventDefault();
-              });
-            } else {
-              if (data.page == 1) {
-                $('.prev').addClass("disabled").prop("disabled", true);
-                $('.prev a').on("click", function(e) {
-                  e.preventDefault();
-                });
-                if (data.pageCount == 1) {
-                  $('.next').addClass("disabled").prop("disabled", true);
-                  $('.next a').on("click", function(e) {
-                    e.preventDefault();
-                    $('.message').empty();
-                    $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-                  });
-                }
-              } else if (data.page == data.pageCount) {
-                $('.next').addClass("disabled").prop("disabled", true);
-                $('.next a').on("click", function(e) {
-                  e.preventDefault();
-                  $('.message').empty();
-                  $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-                });
-              }
-            }
+            $data_hits(data);
           })
-          .fail(function() {
-            $('ul.lists').empty();
-            if (searchword == 0) {
-              $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
-            } else if (navigator.onLine == false) {
-              $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
-            } else {
-              $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
-            }
+          .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+            $data_fail(XMLHttpRequest);
           });
         }
-        function $pager() {
+        function $pager(data) {
           $(data.Items).each(function(index, item) {
             console.log(item);
             var booklist = (
@@ -176,7 +128,82 @@
             );
             $('ul.lists').append(booklist);
           });
-        };
+        }
+        var pager = (
+          '<div class="js-pager">' +
+            '<ul class="btn-wrapper">' + 
+              '<li class="prev btn-item">' + '<a class="btn-anchor" href="">' + '前へ' + '</a>' + '</li>' + 
+              '<li class="next btn-item">' + '<a class="btn-anchor" href="">' + '次へ' + '</a>' + '</li>' + 
+            '</ul>' + 
+          '</div>'
+        );
+        function $data_hits(data) {
+          if (data.hits == 0) {
+              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              $('.prev').addClass("disabled").prop("disabled", true);
+              $('.prev a').on("click", function(e) {
+                e.preventDefault();
+              });
+              $('.next').addClass("disabled").prop("disabled", true);
+              $('.next a').on("click", function(e) {
+                e.preventDefault();
+              });
+          } 
+          else {
+            if (data.page == 1) {
+              $('.prev').addClass("disabled").prop("disabled", true);
+              $('.prev a').on("click", function(e) {
+                e.preventDefault();
+              });
+              if (data.pageCount == 1) {
+                $('.next').addClass("disabled").prop("disabled", true);
+                $('.next a').on("click", function(e) {
+                  e.preventDefault();
+                  $('.message').empty();
+                  $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+                });
+              }
+            } 
+            else if (data.page == data.pageCount) {
+              $('.next').addClass("disabled").prop("disabled", true);
+              $('.next a').on("click", function(e) {
+                e.preventDefault();
+                $('.message').empty();
+                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+              });
+            }
+          }
+        }
+        function $data_fail(XMLHttpRequest) {
+          if (navigator.onLine == false) {
+            $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
+          } else {
+            $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
+          }
+          console.log(XMLHttpRequest.status);
+          switch (XMLHttpRequest.status) {
+            case 400:
+              $('.message').empty();
+              $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
+              break;
+            case 404:
+              $('.message').empty();
+              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              break;
+            case 429:
+              $('.message').empty();
+              $('.lists').prepend('<p class="message">APIリクエスト数が上限に達した場合のエラーです。しばらく時間を空けてから、ご利用ください。</p>');
+              break;
+            case 500:
+              $('.message').empty();
+              $('.lists').prepend('<p class="message">システムエラー。長時間続くようであれば、こちらよりごお問い合わせください。</p>');
+              break;
+            case 503:
+              $('.message').empty();
+              $('.lists').prepend('<p class="message">メンテナンス中</p>');
+              break;
+          }
+        }
         $('.search__btn').on('click', function() {
           pageNum = 1;
           search();
