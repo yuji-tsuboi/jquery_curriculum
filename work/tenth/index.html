@@ -102,22 +102,7 @@
           .done(function(data) {
             $('ul.lists').empty();
             console.log(data);
-            $(data.Items).each(function(index, item) {
-              console.log(item);
-              var booklist = (
-                '<li class="lists__item">' + 
-                  '<div class="lists__item__inner">' + 
-                    '<a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' + 
-                      '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
-                      '<p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +
-                      '<p class="lists__item__detail">作者　：　' + item.Item.author + '</p>' +
-                      '<p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p>' + 
-                    '</a>' +
-                  '</div>' + 
-                '</li>'
-              );
-              $('ul.lists').append(booklist);
-            });
+            $pager();
             $('.js-pager').empty();
             var pager = (
               '<div class="js-pager">' +
@@ -168,12 +153,30 @@
             if (searchword == 0) {
               $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
             } else if (navigator.onLine == false) {
-              $('.lists').prepend('<p class="message">通信に失敗しました。インターネットの接続をご確認ください</p>');
+              $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
             } else {
               $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
             }
           });
         }
+        function $pager() {
+          $(data.Items).each(function(index, item) {
+            console.log(item);
+            var booklist = (
+              '<li class="lists__item">' + 
+                '<div class="lists__item__inner">' + 
+                  '<a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' + 
+                    '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
+                    '<p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +
+                    '<p class="lists__item__detail">作者　：　' + item.Item.author + '</p>' +
+                    '<p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p>' + 
+                  '</a>' +
+                '</div>' + 
+              '</li>'
+            );
+            $('ul.lists').append(booklist);
+          });
+        };
         $('.search__btn').on('click', function() {
           pageNum = 1;
           search();
