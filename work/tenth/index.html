@@ -141,34 +141,34 @@
           if (data.hits == 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
               $('.prev').addClass("disabled").prop("disabled", true);
-              $('.prev a').on("click", function(e) {
-                e.preventDefault();
-              });
+              // $('.prev a').on("click", function(e) {
+              //   e.preventDefault();
+              // });
               $('.next').addClass("disabled").prop("disabled", true);
-              $('.next a').on("click", function(e) {
-                e.preventDefault();
-              });
+              // $('.next a').on("click", function(e) {
+              //   e.preventDefault();
+              // });
           } else {
             if (data.page == 1) {
               $('.prev').addClass("disabled").prop("disabled", true);
-              $('.prev a').on("click", function(e) {
-                e.preventDefault();
-              });
+              // $('.prev a').on("click", function(e) {
+              //   e.preventDefault();
+              // });
             } 
             if (data.pageCount == 1) {
               $('.next').addClass("disabled").prop("disabled", true);
-              $('.next a').on("click", function(e) {
-                e.preventDefault();
-                $('.message').empty();
-                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-              });
+              // $('.next a').on("click", function(e) {
+              //   e.preventDefault();
+              //   $('.message').empty();
+              //   $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+              // });
             } else if (data.page == data.pageCount) {
               $('.next').addClass("disabled").prop("disabled", true);
-              $('.next a').on("click", function(e) {
-                e.preventDefault();
-                $('.message').empty();
-                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-              });
+              // $('.next a').on("click", function(e) {
+              //   e.preventDefault();
+              //   $('.message').empty();
+              //   $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+              // });
             }
           }
         }
@@ -206,14 +206,28 @@
           pageNum = 1;
           Search();
         });
-        $(document).on("click", "li.prev", function() {
-          event.preventDefault();
+        $(document).on("click", "li.prev a", function(e) {
+          e.preventDefault();
+          if ($(".prev").hasClass("disabled")) {
+            
+          }
           Search(pageNum = pageNum - 1);
         });
-        $(document).on("click", "li.next", function() {
-          event.preventDefault();
+        $(document).on("click", "li.next a", function(e) {
+          e.preventDefault();
+          if ($(".next").hasClass("disabled")) {
+
+          }
           Search(pageNum = pageNum + 1);
-        });
+        })
+        // $(document).on("click", "li.prev", function(e) {
+        //   e.preventDefault();
+          // Search(pageNum = pageNum - 1);
+        // });
+        // $(document).on("click", "li.next", function(e) {
+        //   e.preventDefault();
+          // Search(pageNum = pageNum + 1);
+        // });
       });
     </script>
   </body>
