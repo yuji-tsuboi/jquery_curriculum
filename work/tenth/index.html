@@ -102,19 +102,20 @@
           .done(function(data) {
             $('ul.lists').empty();
             console.log(data);
-            Pager(data);
+            Pagershow(data);
             $('.js-pager').empty();
             $('ul.lists').append(pager);
             DataBranch(data);
           })
-          .fail(function(XMLHttpRequest) {
-            DataFail(XMLHttpRequest);
+          .fail(function(error) {
+            DataFail(error);
           });
         }
-        function Pager(data) {
+        function Pagershow(data) {
+          var booklist = "";
           $(data.Items).each(function(index, item) {
             console.log(item);
-            var booklist = (
+            booklist += 
               '<li class="lists__item">' + 
                 '<div class="lists__item__inner">' + 
                   '<a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' + 
@@ -125,9 +126,8 @@
                   '</a>' +
                 '</div>' + 
               '</li>'
-            );
-            $('ul.lists').append(booklist);
           });
+          $('ul.lists').append(booklist);
         }
         var pager = (
           '<div class="js-pager">' +
@@ -143,10 +143,10 @@
               $('.prev').addClass("disabled");
               $('.next').addClass("disabled");
           } else {
-            if (data.page == 1) {
+            if (data.page === 1) {
               $('.prev').addClass("disabled");
             } 
-            if (data.pageCount == 1 || data.page == data.pageCount) {
+            if (data.pageCount === 1 || data.page === data.pageCount) {
               $('.next').addClass("disabled");
               $('.next a').on("click", function() {
                 $('.message').empty();
@@ -155,35 +155,32 @@
             }
           }
         }
-        function DataFail(XMLHttpRequest) {
-          if (navigator.onLine == false) {
+        function DataFail(error) {
+          if (navigator.onLine === false) {
             $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
           } 
-          console.log(XMLHttpRequest.status);
-          switch (XMLHttpRequest.status) {
+          console.log(error.status);
+          switch (error.status) {
             default:
-              $('.lists').prepend('<div class="message">予期せぬエラーが発生しました。</div>');
+              var errortext = '<div class="message">予期せぬエラーが発生しました。</div>';
             case 400:
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>');
+              var errortext = '<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>';
               break;
             case 404:
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              var errortext = '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
               break;
             case 429:
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">APIリクエスト数が上限に達した場合のエラーです。しばらく時間を空けてから、ご利用ください。</p>');
+              var errortext = '<p class="message">APIリクエスト数が上限に達した場合のエラーです。しばらく時間を空けてから、ご利用ください。</p>';
               break;
             case 500:
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">システムエラー。長時間続くようであれば、こちらよりごお問い合わせください。</p>');
+              var errortext = '<p class="message">システムエラー。長時間続くようであれば、こちらよりごお問い合わせください。</p>';
               break;
             case 503:
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">メンテナンス中</p>');
+              var errortext = '<p class="message">メンテナンス中</p>';
               break;
           }
+          $('.message').empty();
+          $('.lists').prepend(errortext);
         }
         $('.search__btn').on('click', function() {
           pageNum = 1;
