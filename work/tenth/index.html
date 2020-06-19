@@ -105,7 +105,7 @@
             Pager(data);
             $('.js-pager').empty();
             $('ul.lists').append(pager);
-            DataHits(data);
+            DataBranch(data);
           })
           .fail(function(XMLHttpRequest) {
             DataFail(XMLHttpRequest);
@@ -137,7 +137,7 @@
             '</ul>' + 
           '</div>'
         );
-        function DataHits(data) {
+        function DataBranch(data) {
           if (data.hits == 0) {
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
               $('.prev').addClass("disabled");
