@@ -81,7 +81,7 @@
       // </div>
 
       $(function() {
-        var pageNum = 1;
+        var pageNum = '';
         var pager = (
           '<div class="js-pager">' +
             '<ul class="btn-wrapper">' + 
@@ -91,7 +91,7 @@
           '</div>'
         );
 
-        function Search() {
+        function searchBooks() {
           $('ul.lists').empty();
           var searchword = $('.search__text__input').val();
           console.log(searchword);
@@ -109,16 +109,15 @@
             }
           })
           .done(function(data) {
-            console.log(data);
-            bookshow(data);
-            $('ul.lists').append(pager);
-            textshow(data);
+            dataDone(data);
           })
           .fail(function(error) {
-            DataFail(error);
+            dataFail(error);
           });
         }
-        function bookshow(data) {
+
+
+        function showBooks(data) {
           var booklist = "";
           $(data.Items).each(function(index, item) {
             console.log(item);
@@ -136,56 +135,70 @@
           });
           $('ul.lists').append(booklist);
         }
-        function textshow(data) {
+        function pagerActivation(data) {
+          $('ul.lists').append(pager);
+          if (data.page === 1) {
+            $('.prev').addClass("disabled");
+          }
+          if (data.page === data.pageCount) {
+            $('.next').addClass("disabled");
+          }
+        }
+        function showText(data) {
           if (data.hits === 0) {
               $('ul.lists').empty();
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
-          } else {
-            if (data.page === 1) {
-              $('.prev').addClass("disabled");
-            } 
-            if (data.pageCount === 1 || data.page === data.pageCount) {
-              $('.next').addClass("disabled");
-            }
-          }
+          } 
         }
-        function DataFail(error) {
+
+
+        function dataDone(data) {
+          console.log(data);
+          showBooks(data);
+          pagerActivation(data);
+          showText(data);
+        }
+        function dataFail(error) {
+          $('.message').empty();
+          var errorText = '';
           if (navigator.onLine === false) {
-            $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
+            $('.lists').prepend('<p class="message">通信に失敗しました。インターネットの接続をご確認ください</p>');
           } 
           console.log(error.status);
           switch (error.status) {
             case 400:
-              var errortext = '<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>';
+              errortext = '<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>';
               break;
             case 404:
-              var errortext = '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
+              errorText = '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
               break;
             case 429:
-              var errortext = '<p class="message">APIリクエスト数が上限に達した場合のエラーです。しばらく時間を空けてから、ご利用ください。</p>';
+              errorText = '<p class="message">APIリクエスト数が上限に達した場合のエラーです。しばらく時間を空けてから、ご利用ください。</p>';
               break;
             case 500:
-              var errortext = '<p class="message">システムエラー。長時間続くようであれば、こちらよりごお問い合わせください。</p>';
+              errorText = '<p class="message">システムエラー。長時間続くようであれば、こちらよりごお問い合わせください。</p>';
               break;
             case 503:
-              var errortext = '<p class="message">メンテナンス中</p>';
+              errorText = '<p class="message">メンテナンス中</p>';
               break;
             default:
-              var errortext = '<div class="message">予期せぬエラーが発生しました。</div>';
+              errorText = '<p class="message">予期せぬエラーが発生しました。</p>';
           }
-          $('.message').empty();
           $('.lists').prepend(errortext);
         }
+
+        
         $('.search__btn').on('click', function() {
-          Search();
+          pageNum = 1;
+          searchBooks();
         });
         $(document).on("click", "li.prev a", function(e) {
           e.preventDefault();
           if ($(".prev").hasClass("disabled")) {
-            return false;
+            return;
           }
           pageNum--;
-          Search();
+          searchBooks();
         });
         $(document).on("click", "li.next a", function(e) {
           e.preventDefault();
@@ -195,7 +208,7 @@
             return;
           }
           pageNum++;
-          Search();
+          searchBooks();
         })
       });
     </script>
