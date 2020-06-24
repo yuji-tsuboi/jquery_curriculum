@@ -109,10 +109,8 @@
             }
           })
           .done(function(data) {
-            $('ul.lists').empty();
             console.log(data);
             bookshow(data);
-            $('.js-pager').empty();
             $('ul.lists').append(pager);
             textshow(data);
           })
@@ -140,20 +138,15 @@
         }
         function textshow(data) {
           if (data.hits === 0) {
+              $('ul.lists').empty();
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
-              $('.prev').addClass("disabled");
-              $('.next').addClass("disabled");
           } else {
             if (data.page === 1) {
               $('.prev').addClass("disabled");
             } 
-            // if (data.pageCount === 1 || data.page === data.pageCount) {
-            //   $('.next').addClass("disabled");
-            //   $('.next a').on("click", function() {
-            //     $('.message').empty();
-            //     $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-            //   });
-            // }
+            if (data.pageCount === 1 || data.page === data.pageCount) {
+              $('.next').addClass("disabled");
+            }
           }
         }
         function DataFail(error) {
@@ -184,7 +177,6 @@
           $('.lists').prepend(errortext);
         }
         $('.search__btn').on('click', function() {
-          pageNum = 1;
           Search();
         });
         $(document).on("click", "li.prev a", function(e) {
@@ -198,15 +190,9 @@
         $(document).on("click", "li.next a", function(e) {
           e.preventDefault();
           if ($(".next").hasClass("disabled")) {
+            $('.message').empty();
+            $('.lists').prepend('<p class="message">これ以上はありません。</p>');
             return;
-          } else {
-            if (data.pageCount === 1 || data.page === data.pageCount) {
-              $('.next').addClass("disabled");
-              $('.next a').on("click", function() {
-                $('.message').empty();
-                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-              });
-            }
           }
           pageNum++;
           Search();
