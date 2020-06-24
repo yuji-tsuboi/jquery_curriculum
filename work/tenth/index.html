@@ -139,20 +139,27 @@
           $('ul.lists').append(booklist);
         }
         function textshow(data) {
-          if (data.page === 1) {
-            $('.prev').addClass("disabled");
-          } else if (data.pageCount === 1 || data.page === data.pageCount){
-            $('.next').addClass("disabled");
-            $('.next a').on("click", function() {
-              $('.message').empty();
-              $('.lists').prepend('<p class="message">これ以上はありません。</p>');
-            });
+          if (data.hits === 0) {
+              $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+              $('.prev').addClass("disabled");
+              $('.next').addClass("disabled");
+          } else {
+            if (data.page === 1) {
+              $('.prev').addClass("disabled");
+            } 
+            // if (data.pageCount === 1 || data.page === data.pageCount) {
+            //   $('.next').addClass("disabled");
+            //   $('.next a').on("click", function() {
+            //     $('.message').empty();
+            //     $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+            //   });
+            // }
           }
         }
         function DataFail(error) {
           if (navigator.onLine === false) {
             $('.lists').prepend('<div class="message">通信に失敗しました。インターネットの接続をご確認ください</div>');
-          }
+          } 
           console.log(error.status);
           switch (error.status) {
             case 400:
@@ -185,15 +192,23 @@
           if ($(".prev").hasClass("disabled")) {
             return false;
           }
-          pageNum = pageNum - 1
+          pageNum--;
           Search();
         });
         $(document).on("click", "li.next a", function(e) {
           e.preventDefault();
           if ($(".next").hasClass("disabled")) {
             return;
+          } else {
+            if (data.pageCount === 1 || data.page === data.pageCount) {
+              $('.next').addClass("disabled");
+              $('.next a').on("click", function() {
+                $('.message').empty();
+                $('.lists').prepend('<p class="message">これ以上はありません。</p>');
+              });
+            }
           }
-          pageNum = pageNum + 1
+          pageNum++;
           Search();
         })
       });
