@@ -181,11 +181,9 @@
             case 503:
               errorText = '<p class="message">メンテナンス中</p>';
               break;
-            case 
-              errorText = '<p class="message">通信に失敗しました。インターネットの接続をご確認ください</p>';
-              break;
             default:
               errorText = '<p class="message">予期せぬエラーが発生しました。</p>';
+              break;
           }
           $('.lists').prepend(errortext);
         }
