@@ -109,15 +109,15 @@
             }
           })
           .done(function(data) {
-            dataDone(data);
+            showBooks(data);
           })
           .fail(function(error) {
-            dataFail(error);
+            showerrorMessage(error);
           });
         }
 
 
-        function showBooks(data) {
+        function createBooks(data) {
           var booklist = "";
           $(data.Items).each(function(index, item) {
             console.log(item);
@@ -144,7 +144,7 @@
             $('.next').addClass("disabled");
           }
         }
-        function showText(data) {
+        function showerrorMessage(data) {
           if (data.hits === 0) {
               $('ul.lists').empty();
               $('.lists').prepend('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
@@ -152,22 +152,22 @@
         }
 
 
-        function dataDone(data) {
+        function showBooks(data) {
           console.log(data);
-          showBooks(data);
+          createBooks(data);
           pagerActivation(data);
-          showText(data);
+          showerrorMessage(data);
         }
-        function dataFail(error) {
+        function errorMessage(error) {
           $('.message').empty();
-          var errorText = '';
-          if (navigator.onLine === false) {
-            $('.lists').prepend('<p class="message">通信に失敗しました。インターネットの接続をご確認ください</p>');
-          } 
+          var errorText = "";
           console.log(error.status);
           switch (error.status) {
+            case 0:
+              errorText = '<p class="message">通信に失敗しました。インターネットの接続をご確認ください</p>';
+              break;
             case 400:
-              errortext = '<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>';
+              errorText = '<p class="message">検索文字が空、もしくは半角英数1文字になっています</p>';
               break;
             case 404:
               errorText = '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
@@ -185,7 +185,7 @@
               errorText = '<p class="message">予期せぬエラーが発生しました。</p>';
               break;
           }
-          $('.lists').prepend(errortext);
+          $('.lists').prepend(errorText);
         }
 
         
